@@ -2,6 +2,7 @@ import path from 'path';
 import fs from 'fs';
 import {promisify} from 'bluebird';
 import {info} from './log';
+import axios from 'axios';
 
 const readFile = promisify(fs.readFile);
 const {CONFIG_FILE} = process.env;
@@ -31,18 +32,25 @@ async function envSource() {
     RANCHER_ADDRESS,
     RANCHER_ACCESS_KEY,
     RANCHER_SECRET_KEY,
-    RANCHER_PROJECT_ID
+    RANCHER_PROJECT_ID,
+    CATTLE_ACCESS_KEY,
+    CATTLE_SECRET_KEY,
+    DNS_POLL_INTERVAL,
+    DNS_DOMAIN,
+    DNS_PORT,
   } = process.env;
 
   return {
     rancher: {
       address: RANCHER_ADDRESS,
       auth: {
-        accessKey: RANCHER_ACCESS_KEY,
-        secretKey: RANCHER_SECRET_KEY
+        accessKey: RANCHER_ACCESS_KEY || CATTLE_ACCESS_KEY,
+        secretKey: RANCHER_SECRET_KEY || CATTLE_SECRET_KEY
       },
       projectId: RANCHER_PROJECT_ID
     },
-    pollServicesInterval: 10000
+    domain: DNS_DOMAIN,
+    port: DNS_PORT || 53,
+    pollServicesInterval: DNS_POLL_INTERVAL || 10000
   }
 }

@@ -12,6 +12,7 @@ import DNS from './dns';
   assert(config.pollServicesInterval, '`pollServicesInterval` is missing');
   assert(config.domain, '`domain` is missing');
   assert(config.port, '`port` is missing');
+
   const dns = new DNS();
   dns.listen(config.port);
 
